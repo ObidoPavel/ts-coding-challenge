@@ -1,13 +1,13 @@
-import { accounts } from "./config";
+import { mainAccount } from "./config";
 import { AccountCreateTransaction, AccountId, Client, PrivateKey } from "@hashgraph/sdk";
 
-const client = Client.forTestnet()
+const client = Client.forTestnet();
 
 async function main() {
-  const account = accounts[0]
-  const MY_ACCOUNT_ID = AccountId.fromString(account.id);
-  const MY_PRIVATE_KEY = PrivateKey.fromStringED25519(account.privateKey);
-  client.setOperator(MY_ACCOUNT_ID, MY_PRIVATE_KEY);
+  // Set up the main account as the payer
+  const PAYER_ID = AccountId.fromString(mainAccount.id);
+  const PAYER_KEY = PrivateKey.fromStringED25519(mainAccount.privateKey);
+  client.setOperator(PAYER_ID, PAYER_KEY);
 
   for (let i = 0; i < 5; i++) {
     const newPrivateKey = PrivateKey.generate()
@@ -17,4 +17,4 @@ async function main() {
   }
 }
 
-main().then(console.log).catch(console.error)
+main().then(console.log).catch(console.error);
